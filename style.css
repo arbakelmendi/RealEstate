@@ -20,6 +20,8 @@
     align-items: center;
     justify-content: space-between;
     float: right;
+    transition: 0.5ms;
+    color: #009688;
     
 }
 
@@ -28,8 +30,8 @@
 .navbar ul li{
     list-style: none;
     display: inline-block;
-    margin:  10px;
-    position: 0;
+    margin:  0 20px;
+    position: relative;
 }
 
 .navbar ul li a{
@@ -42,12 +44,16 @@
 .navbar ul li::after{
     content: '';
     height: 3px;
-    width: 10;
+    width: 0;
     background: #b5a6c7;
     position: absolute;
     left: 0;
     bottom: -5px;
     transition: 0.5s;
+}
+
+.navbar ul li:hover::after{
+    width: 100%;
 }
 
 
