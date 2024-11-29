@@ -3,9 +3,310 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Contact us</title>
+    <style>
+        *,*::before,*::after{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        body{
+            font-family: "Poppins",sans-serif;
+            --main-color: hsl(208,92%,54%);
+        }
+        a{
+            text-decoration: none;
+        }
+        header{
+            position: absolute;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 4;
+        }
+        header .container{
+            max-width: 82rem;
+            margin: 0 auto;
+            padding: 0 1rem;
+            height: 65px;
+            display: flex;
+            align-items: flex-end;
+        }
+        header ul{
+            display: flex;
+            list-style: none;
+            align-items: center;
+        }
+        .logo{
+            display: flex;
+            align-items: center;
+            margin-right:3rem;
+
+        }
+        .logo .images{
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr;
+        }
+        .logo img{
+            height: 35px;
+            grid-column: 1/2;
+            grid-row: 1/2;
+            margin-right: 0.8rem;
+        }
+        .logo img.logo-forDark{
+            opacity: 0;
+        }
+        .logo h2{
+            color: #000;
+            font-size: 1.55rem;
+            margin-top: 2px;
+        }
+        .nav-link{
+            margin-left: 5.5rem;
+            padding: 0 1rem;
+            font-weight: 600;
+            font-size: 1rem;
+            color: hsl(208,17%.79%);
+            transition: 0.3s;
+        }
+        .nav-link:hover{
+            color: var(--main-color);
+        }
+        .nav-link.theme-toggle{
+            cursor: pointer;
+        }
+
+        .theme-toggle .fa-moon{
+            display: none;
+        }
+        .theme-toggle .fa-sun{
+            display: inline;
+        }
+
+        .contact{
+            width:100% ;
+            overflow: hidden;
+            background-color: #fff;
+
+        }
+
+        .contact .container{
+            height: 100vh;
+            min-height: 700px;
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr;
+        }
+        .contact .container > div{
+            grid-column:1/2 ;
+            grid-row: 1/2;
+
+        }
+        .left{
+            width:100% ;
+            max-width: 80rem;
+            margin: 0 auto;
+            padding: 65px 1.5rem 0;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            align-items: center;
+            position: relative;
+            z-index: 3;
+        }
+
+        .contact-heading h1{
+            font-weight: 600;
+            color: #000;
+            font-size: 3.5rem;
+            line-height: 0.9;
+            white-space: nowrap;
+            margin-bottom: 1.2rem;
+        }
+        .text{
+            color: #9ca7b6;
+            line-height: 1.1;
+            font-size: 1rem;
+        }
+        .text a{
+            color: var(--main-color);
+            transition: .3s;
+        }
+        .text a:hover{
+            color: hsl(208,77%,48%);
+            transition: .3s;
+        }
+        .input-wrap{
+            position: relative;
+        }
+        .form-wrapper{
+            max-width: 32rem;
+        }
+        .contact-form{
+            display: grid;
+            margin-top: 2.55rem;
+            grid-template-columns:repeat(2,1fr);
+            column-gap: 2rem;
+            row-gap: 1rem;
+        }
+        .input-wrap.w-100{
+            grid-column: span 2;
+        }
+
+        .contact-input{
+            width: 100%;
+            background-color:rgb(244, 244, 244);
+            padding: 1.5rem 1.35rem calc(0.75rem - 2px) 1.35rem;
+            border: none;
+            outline: none;
+            font-family: inherit;
+            border-radius:20px ;
+            color: #000;
+            font-weight: 600;
+            font-size:0.95rem;
+            border: 2px solid transparent;
+            box-shadow:  0 0 0 0px hsla (208, 92%, 54%, 0.169);
+            transition: 0.3s;
+        }
+        .contact-input:hover{
+            background-color:rgb(223, 223, 223) ;
+        }
+
+        .input-wrap label{
+            position: absolute;
+            top: 50%;
+            left: calc(1.35rem + 2px);
+            transform:translateY(-50%) ;
+            color: #9ca7b6;
+            pointer-events: none;
+        }
+        
+        .input-wrap .icon{
+            position: absolute;
+            right: calc(1.35rem + 2px);
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: #8c9aaf;
+            font-size: 1.25rem;
+        }
+
+        textarea.contact-input{
+            resize: none;
+            width: 100%;
+            min-height: 150px;
+        }
+        textarea.contact-input ~ label{
+            top: 1.2rem;
+            transform: none;
+        }
+        textarea.contact-input ~ .icon{
+            top: 1.3rem;
+            transform: none;
+        }
+
+        .input-wrap.focus .contact-input{
+            background-color: ;
+            border: 2px solid hsl(208, 91%,55%);
+            box-shadow:0 0 0 5px hsla(208, 91%, 55%, 0.11) ;
+        }
+
+        .input-wrap.focus label{
+            color: #fff;
+        }
+
+        .input-wrap.focus .icon{
+            color: #fff;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </style>
 </head>
 <body>
-    
+    <header>
+        <div class="container">
+            <ul>
+                <li>
+                    <a href="" class="logo">
+                        <div class="images">
+                            <img src="" class="logo-forDark" alt="Publius">
+                            <img src="" class="logo-forLight" alt="Publius">
+                        </div>
+                        <h2>Publius.</h2>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link">Home</a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link">Join</a>
+                </li>
+                <li>
+                    <span class="nav-link theme-toggle">
+                        <i class="fa-solid fa-sun"></i>
+                        <i class="fa-solid fa-moon"></i>
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </header>
+    <main>
+        <section class="contact">
+            <div class="container">
+                <div class="left">
+                    <div class="form-wrapper">
+                        <div class="contact-heading">
+                            <h1>Let's work together.</h1>
+                            <p class="text">Or reach us via : <a href="gmail">Publius@gmail.com</a></p>
+                        </div>
+
+                        <form action="index.html" method="post" class="contact-form">
+                            <div class="input-wrap">
+                                <input class="contact-input" autocomplete="off" name="First Name"
+                                 type="text" required>
+                                 <label>First Name</label>
+                                 <i class="icon fa-solid fa-address-card"></i>
+                            </div>
+
+                            <div class="input-wrap">
+                                <input class="contact-input" autocomplete="off" name="Last Name"
+                                 type="text" required>
+                                 <label>Last Name</label>
+                                 <i class="icon fa-solid fa-address-card"></i>
+                            </div>
+
+                            <div class="input-wrap w-100">
+                                <input class="contact-input" autocomplete="off" name="Email"
+                                 type="email" required>
+                                 <label>Email</label>
+                                 <i class="icon fa-solid fa-envelope"></i>
+                            </div>
+                            <div class="input-wrap textarea w-100">
+                               <textarea name="Message" autocomplete="off" 
+                               class="contact-input" required></textarea>
+                                 <label>Message</label>
+                                 <i class="icon fa-solid fa-inbox"></i>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+                    <div class="right"> </div>
+            </div>
+        </section>
+    </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/js/all.min.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
