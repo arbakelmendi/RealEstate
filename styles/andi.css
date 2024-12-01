@@ -1,0 +1,154 @@
+/* General Styles */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color:white;
+    color:black;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+
+
+.main-content {
+    display: flex;
+    gap: 20px;
+}
+
+/* Agents List */
+.agents {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 45px;
+}
+
+.agent-card {
+    display: flex;
+    background:white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    align-items: center;
+    gap: 20px;
+}
+
+.agent-card img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.agent-details {
+    flex: 1;
+}
+
+.agent-details h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.agent-details p {
+    margin: 5px 0;
+    font-size: 14px;
+    color:gray;
+}
+
+.agent-details a {
+    text-decoration: none;
+    color:blue;
+    font-size: 14px;
+}
+
+.agent-details a:hover {
+    text-decoration: underline;
+}
+.agents :hover{
+    cursor: pointer;
+}
+/* Sidebar */
+.sidebar {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.find-agent,
+.recent-viewed {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+}
+
+.find-agent h3,
+.recent-viewed h3 {
+    margin: 0 0 15px 0;
+    font-size: 18px;
+}
+
+.find-agent input,
+.find-agent select,
+.find-agent button {
+    width: 90%;
+    margin-bottom: 10px;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.find-agent button {
+    background:blue;
+    color:white;
+    cursor: pointer;
+    border: none;
+}
+
+.find-agent button:hover {
+    background: lightblue;
+}
+
+.recent-viewed .listing {
+    margin-bottom: 10px;
+}
+
+.recent-viewed .listing p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+.recent-viewed img{
+    width: 230px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 5px;
+
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main-content {
+        flex-direction: column;
+    }
+
+    .agents, .sidebar {
+        flex: unset;
+        width: 100%;
+    }
+
+    .agent-card {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .agent-card img {
+        margin-bottom: 10px;
+    }
+}
