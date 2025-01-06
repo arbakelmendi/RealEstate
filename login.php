@@ -2,13 +2,37 @@
 <html>
 
 <?php
+
+// define POST on login.php
+// check if access with post
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // collect value of input field
+    // collect value of username & password field
     $username = $_POST['username'];
     if (empty($username)) {
         echo "Name is empty";
     } else {
-        echo $username;
+        $servername = "127.0.0.1";
+        $usernameDB = "root";
+        $password = "";
+        $db = "RealEstate";
+
+        // Create connection
+        $conn = new mysqli($servername,$usernameDB, $password , $db);
+
+        // Check connection
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+        echo "Connected successfully";
+        
+        
+        if ($result = $conn -> query("SELECT * FROM `users` WHERE username = '$username';")) {
+            echo "Returned rows are: " . $result -> num_rows;
+            // Free result set
+            $result -> free_result();
+          }
+          
+
     }
 
     $password = $_POST['password'];
@@ -53,31 +77,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </ul>
         </div>
 
-    
-<div>
-        <div class="login-form">
 
-            <form method="POST" action="/login.php" onsubmit="validateUser()">
-                <label for="first">
-                    Username: 
-                </label>
-                <input type="text" id="username" name="username" placeholder="Enter your Username" required>
+        <div>
+            <div class="login-form">
 
-                <label for="password">
-                    Password:
-                </label>
-                <input type="password" id="password" name="password" placeholder="Enter your Password" required>
+                <form method="POST" action="/login.php" onsubmit="validateUser()">
+                    <label for="first">
+                        Username:
+                    </label>
+                    <input type="text" id="username" name="username" placeholder="Enter your Username" required>
 
-                <div class="wrap">
-                    <button type="submit">
-                        Submit
-                    </button>
-                </div>
-            </form>
+                    <label for="password">
+                        Password:
+                    </label>
+                    <input type="password" id="password" name="password" placeholder="Enter your Password" required>
+
+                    <div class="wrap">
+                        <button type="submit">
+                            Submit
+                        </button>
+                    </div>
+                </form>
 
 
+            </div>
         </div>
-    </div>
     </div>
 </body>
 

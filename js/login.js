@@ -12,6 +12,7 @@ const response = fetch("http://localhost/login.html", {
 
 
 
+
 /*
 //function to check if user exists and has typed correct password
 function validateUser(){
