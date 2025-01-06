@@ -1,6 +1,25 @@
 <!DOCTYPE html>
 <html>
 
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // collect value of input field
+    $username = $_POST['username'];
+    if (empty($username)) {
+        echo "Name is empty";
+    } else {
+        echo $username;
+    }
+
+    $password = $_POST['password'];
+    if (empty($password)) {
+        echo "PASSWORD is empty";
+    } else {
+        echo $password;
+    }
+}
+?>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,13 +40,14 @@
         <div class="navbar">
             <img src="img/logo.png" class="logo">
             <ul>
-                <li><a href="main.html">Home</a></li>
+                <!--********************* change all pages -->
+                <li><a href="main.php">Home</a></li>
                 <li><a href="#">About</a></li>
                 <li><a href="#">Buying</a></li>
                 <li><a href="#">Renting</a></li>
                 <li><a href="#">Selling</a></li>
                 <li><a href="contactUs.html">Contact</a></li>
-                <li><a href="login.html" class="h-btn1">Login</a></li>
+                <li><a href="login.php" class="h-btn1">Login</a></li>
                 <li><a href="#" class="h-btn2">Sign Up</a></li>
 
             </ul>
@@ -37,11 +57,11 @@
 <div>
         <div class="login-form">
 
-            <form action="" onsubmit="validateUser()">
+            <form method="POST" action="/login.php" onsubmit="validateUser()">
                 <label for="first">
-                    Username:
+                    Username: 
                 </label>
-                <input type="text" id="username" name="first" placeholder="Enter your Username" required>
+                <input type="text" id="username" name="username" placeholder="Enter your Username" required>
 
                 <label for="password">
                     Password:
