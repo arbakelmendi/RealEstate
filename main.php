@@ -20,14 +20,11 @@
             <div class="navbar">
                 <img src="img/logo.png" class="logo">
                 <ul>
-                    <li><a href="main.html">Home</a></li>
+                    <li><a href="main.php">Home</a></li>
                     <li><a href="#">About</a></li>
-                    <li><a href="#">Buying</a></li>
-                    <li><a href="#">Renting</a></li>
-                    <li><a href="#">Selling</a></li>
-                    <li><a href="agents.html">Agents</a></li>
-                    <li><a href="contactUs.html">Contact</a></li>
-                    <li><a href="login.html" class="h-btn1">Login</a></li>
+                    <li><a href="agents.php">Agents</a></li>
+                    <li><a href="contactUs.php">Contact</a></li>
+                    <li><a href="login.php" class="h-btn1">Login</a></li>
                     <li><a href="#" class="h-btn2">Sign Up</a></li>
 
                 </ul>

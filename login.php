@@ -26,13 +26,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "Connected successfully";
         
         
-        if ($result = $conn -> query("SELECT * FROM `users` WHERE username = '$username';")) {
-            echo "Returned rows are: " . $result -> num_rows;
-            // Free result set
-            $result -> free_result();
-          }
-          
-
+    
+            $sql="SELECT * FROM `users` WHERE username = '$username';";
+            $query = mysqli_query($conn,$sql);
+            $result = mysqli_fetch_assoc($query);
+            $resultstring = $result['message'];
+        
+            echo $resultstring;
     }
 
     $password = $_POST['password'];
@@ -49,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles/login.css">
     <script type="text/javascript" src="./js/login.js"></script>
-    <title>ProRealEstate - Find your dream house</title>
+    <title>ProRealEstate</title>
 
 
 </head>
@@ -64,13 +64,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="navbar">
             <img src="img/logo.png" class="logo">
             <ul>
-                <!--********************* change all pages -->
+                <!--****** change all pages -->
                 <li><a href="main.php">Home</a></li>
                 <li><a href="#">About</a></li>
-                <li><a href="#">Buying</a></li>
-                <li><a href="#">Renting</a></li>
-                <li><a href="#">Selling</a></li>
-                <li><a href="contactUs.html">Contact</a></li>
+                <li><a href="agents.php">Agents</a></li>
+                <li><a href="contactUs.php">Contact</a></li>
                 <li><a href="login.php" class="h-btn1">Login</a></li>
                 <li><a href="#" class="h-btn2">Sign Up</a></li>
 

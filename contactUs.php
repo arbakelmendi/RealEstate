@@ -370,7 +370,7 @@
         <div class="container">
             <ul>
                 <li>
-                    <a href="main.html" class="logo">
+                    <a href="main.php" class="logo">
                         <div class="images">
                         <img src="./img/logo.png" class="logo-forLight" alt="Publius">
                         </div>
@@ -378,7 +378,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="main.html" class="nav-link">Home</a>
+                    <a href="main.php" class="nav-link">Home</a>
                 </li>
                 <li>
                     <a href="#" class="nav-link">Join</a>

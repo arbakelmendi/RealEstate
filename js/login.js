@@ -4,7 +4,7 @@
 const myHeaders = new Headers();
 myHeaders.append("Content-Type", "application/json");
 
-const response = fetch("http://localhost/login.html", {
+const response = fetch("http://localhost/login.php", {
   method: "POST",
   body: JSON.stringify({ username: "example", password: "Admin" }),
   headers: myHeaders,
