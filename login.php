@@ -3,6 +3,8 @@
 
 <?php
 
+
+
 // define POST on login.php
 // check if access with post
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -37,10 +39,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($result) {
             // Access the 'username' field from the result
-            $resultstring = $result['username'];
+            $resultstring = $result['username']; 
             echo $resultstring;
+            echo "</br>";
         } else {
             echo "No user found with username: $username";
+           // header('Location: registerForm.php');
+           return;
+            
         }
 
         // check pw of user
@@ -56,9 +62,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (!$resultPw) {
                 echo "The password is incorrect!";
             }
+        
+
+           //check the status of user
+           $sqlS = "SELECT status FROM users WHERE username = '$username'";
+
+           $queryS = mysqli_query($conn, $sqlS);
+
+           $resultS = mysqli_fetch_assoc($queryS);
+
+    
+           if ($resultS['status'] == 'admin') {
+               header('Location: admin_dashboard.php');
+           } else if ($resultS['status'] == 'user') {
+               header('Location: user_home.php');
+           } else {
+               echo "Incorrect password!";
+           }
+          } else {
+           echo "User does not exist!";
+
         }
+
     }
-}
+
+
+
+
+
+    }
 
 
 ?>
@@ -86,7 +118,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <li><a href="agents.php">Agents</a></li>
                 <li><a href="contactUs.php">Contact</a></li>
                 <li><a href="login.php" class="h-btn1">Login</a></li>
-                <li><a href="#" class="h-btn2">Sign Up</a></li>
+                <li><a href="registerForm.php" class="h-btn2">Sign Up</a></li>
 
             </ul>
         </div>

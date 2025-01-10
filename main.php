@@ -25,7 +25,7 @@
                     <li><a href="agents.php">Agents</a></li>
                     <li><a href="contactUs.php">Contact</a></li>
                     <li><a href="login.php" class="h-btn1">Login</a></li>
-                    <li><a href="#" class="h-btn2">Sign Up</a></li>
+                    <li><a href="registerForm.php" class="h-btn2">Sign Up</a></li>
 
                 </ul>
             </div>
