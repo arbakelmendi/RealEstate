@@ -10,6 +10,7 @@
             margin: 0;
             box-sizing: border-box;
         }
+        
         body{
             font-family: "Poppins",sans-serif;
             --main-color:  #009688;
@@ -177,7 +178,7 @@
             transition: 0.3s;
         }
         .contact-input:hover{
-            color: #fff;
+            color: #000;
         }
 
         .input-wrap label{
@@ -367,6 +368,8 @@
 </head>
 <body>
     <header>
+
+            
         <div class="container">
             <ul>
                 <li>
@@ -441,6 +444,7 @@
                     </div>
                 </div>
             </div>
+    
         </section>
     </main>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/js/all.min.js"></script>

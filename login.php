@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
-    echo "Connected successfully</br>";
+   // echo "Connected successfully</br>";
 
 
     // check user 
@@ -39,14 +39,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($result) {
             // Access the 'username' field from the result
-            $resultstring = $result['username']; 
-            echo $resultstring;
-            echo "</br>";
+            $resultstring = $result['username'];
+            //echo $resultstring;
+           // echo "</br>";
         } else {
             echo "No user found with username: $username";
-           // header('Location: registerForm.php');
-           return;
-            
+            // header('Location: registerForm.php');
+            return;
         }
 
         // check pw of user
@@ -54,43 +53,53 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $queryPw = mysqli_query($conn, $sqlPw);
 
+    
         if ($queryPw != false) {
-
+    
+    
             $resultPw = mysqli_fetch_assoc($queryPw); // turn to assoc array
             // ['password'=>'arba123']
+    
+            if ($resultPw) {
+                // Access the 'password' field from the result
+                $resultstringPw = $resultPw['password'];
+                //echo $resultstringPw;
+                //echo "</br>";
+            } else {
+                echo '<script>document.getElementById("isLoginCorrect").innerHTML="PasswortINcorrect";</script>';
+                // header('Location: registerForm.php');
+                return;
+            }
+        /*if ($queryPw) {
 
+            $resultPw = mysqli_fetch_assoc($queryPw); // turn to assoc array
+            // ['password'=>'arba123'] //  ['password'=>'']
+            //check if the password is correct 
             if (!$resultPw) {
                 echo "The password is incorrect!";
+            }*/
+
+
+            //check the status of user
+            $sqlS = "SELECT status FROM users WHERE username = '$username'";
+
+            $queryS = mysqli_query($conn, $sqlS);
+
+            $resultS = mysqli_fetch_assoc($queryS);
+
+
+            if ($resultS['status'] == 'admin') {
+                header('Location: admin_dashboard.php');
+            } else if ($resultS['status'] == 'user') {
+                header('Location: user_home.php');
+            } else {
+                echo "Incorrect password!";
             }
-        
-
-           //check the status of user
-           $sqlS = "SELECT status FROM users WHERE username = '$username'";
-
-           $queryS = mysqli_query($conn, $sqlS);
-
-           $resultS = mysqli_fetch_assoc($queryS);
-
-    
-           if ($resultS['status'] == 'admin') {
-               header('Location: admin_dashboard.php');
-           } else if ($resultS['status'] == 'user') {
-               header('Location: user_home.php');
-           } else {
-               echo "Incorrect password!";
-           }
-          } else {
-           echo "User does not exist!";
-
+        } else {
+            echo "User does not exist!";
         }
-
     }
-
-
-
-
-
-    }
+}
 
 
 ?>
@@ -143,6 +152,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             Submit
                         </button>
                     </div>
+                    <p id=isLoginCorrect></p>
                 </form>
 
 
