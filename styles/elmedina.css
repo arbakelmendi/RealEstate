@@ -169,8 +169,8 @@ header ul{
     box-shadow:  0 0 0 0px hsla (208, 92%, 54%, 0.169);
     transition: 0.3s;
 }
-.contact-input:hover{
-    color: #fff;
+.contact-input:focus{
+    color:#000;
 }
 
 .input-wrap label{
