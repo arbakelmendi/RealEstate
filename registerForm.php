@@ -2,11 +2,16 @@
 <html lang="en">
 
 <?php
+
+session_start();
+
+$error = ""; 
+$success = "";
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $Firstname = $_POST['Firstname'];
-    $Lastname = $_POST['Lastname'];
-    $username = $_POST['Username'];
-    $password = $_POST['Password'];
+    $username =$_POST['username'];
+    $password =$_POST['password'];
+    $status = 'user';
 
     $servername = "127.0.0.1";
     $usernameDB = "root";
@@ -20,70 +25,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
-    echo "Connected successfully</br>";
+    //echo "Connected successfully</br>";
 
 
     // check user 
-    $sql = "SELECT username FROM `users` WHERE username = '".$_POST['Username']."'";
-    $query = mysqli_query($conn, $sql); // sqlobject 
-    $anything_found = mysqli_num_rows($query);
+    $stmt = $conn->prepare("SELECT id FROM users WHERE username = ?");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $stmt->store_result();
 
-    if ($anything_found>0) {
-        echo "This user exist!";
-        return false;
-
-
-       // $result = mysqli_fetch_assoc($query); // turn to assoc array
-        // ['username' =>'Arba','password'=>'arba123','status'=>'user','id'=> 8724]
-
-       /* if ($result) {
-            // Access the 'username' field from the result
-            $resultstring = $result['username'];
-            echo "This user exist!";
-            echo "</br>";
-        } else {
-            echo "This user exist!";
-            // header('Location: login.php');
-            return;
-        }*/
-
-       /* // check pw of user
-        $sqlPw = "SELECT pw FROM `users` WHERE username = '$username' AND pw = '$password';";
-
-        $queryPw = mysqli_query($conn, $sqlPw);
-
-        if ($queryPw != false) {
-
-            $resultPw = mysqli_fetch_assoc($queryPw); // turn to assoc array
-            // ['password'=>'arba123']
-
-            if (!$resultPw) {
-                echo "The password is incorrect!";
-            }
-
-
-            //check the status of user
-            $sqlS = "SELECT status FROM users WHERE username = '$username'";
-
-            $queryS = mysqli_query($conn, $sqlS);
-
-            $resultS = mysqli_fetch_assoc($queryS);
-
-
-            if ($resultS['status'] == 'admin') {
-                header('Location: admin_dashboard.php');
-            } else if ($resultS['status'] == 'user') {
-                header('Location: user_home.php');
-            } else {
-                echo "Incorrect password!";
-            }
-        } else {
-            echo "User does not exist!";
-        }*/
+    if ($stmt->num_rows > 0) {
+        $error = "Username already exists. <a href='login.php' style='color: blue; text-decoration: underline;'>Click here to login</a>";
     }else{
-        echo "success";
-        return false;
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        $stmt = $conn->prepare("INSERT INTO users (username, pw, status) VALUES (?, ?, ?)");
+        $stmt->bind_param("sss", $username, $hashedPassword, $status);
+
+        if ($stmt->execute()) {
+            $error = "<span style='color: green;'>Registration successful! <a href='login.php' style='color: blue; text-decoration: underline;'>Click here to login</a></span>";
+        } else {
+            $error = "Registration failed. Please try again.";
+        }
     }
+
+    $stmt->close();
+    $conn->close();
 }
 
 ?>
@@ -101,9 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="navbar">
             <img src="img/logo.png" class="logo">
             <ul>
-                <!--****** change all pages -->
                 <li><a href="main.php">Home</a></li>
-                <li><a href="#">About</a></li>
                 <li><a href="agents.php">Agents</a></li>
                 <li><a href="contactUs.php">Contact</a></li>
                 <li><a href="login.php" class="h-btn1">Login</a></li>
@@ -117,23 +81,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <label for="firstname">
         Firstname:
     </label>
-    <input type="text" id="Firstname" name="Firstname" placeholder="Enter your Firstname" required>
+    <input type="text" id="Firstname" name="firstname" placeholder="Enter your Firstname" required>
     <label for="lastname">
         Lastname:
     </label>
-    <input type="text" id="Lastname" name="Lastname" placeholder="Enter your Lastname" required>
+    <input type="text" id="Lastname" name="lastname" placeholder="Enter your Lastname" required>
     <label for="username">
         Username:
     </label>
-    <input type="text" id="username" name="Username" placeholder="Enter your Username" required>
+    <input type="text" id="username" name="username" placeholder="Enter your Username" required>
 
     <label for="password">
         Password:
     </label>
-    <input type="password" id="password" name="Password" placeholder="Enter your Password" required>
+    <input type="password" id="password" name="password" placeholder="Enter your Password" required>
 
-    <span class= "error">Username already exist. </span> 
-    <span class= "success">Username can be assigned. </span> 
+
 
     <div class="wrap">
         <button type="submit">
@@ -143,7 +106,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </form>
 
 
-</div>
+
+
+<?php if ($error): ?>
+        <p style="color: red;"><?= $error ?></p>
+    <?php endif; ?>
+    </div>
 </body>
 
 </html>

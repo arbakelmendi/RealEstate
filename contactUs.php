@@ -10,7 +10,6 @@
             margin: 0;
             box-sizing: border-box;
         }
-        
         body{
             font-family: "Poppins",sans-serif;
             --main-color:  #009688;
@@ -178,7 +177,7 @@
             transition: 0.3s;
         }
         .contact-input:hover{
-            color: #000;
+            color: #fff;
         }
 
         .input-wrap label{
