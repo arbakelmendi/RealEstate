@@ -3,10 +3,11 @@
 
 <?php
 
+session_start();
+
+$error = "";
 
 
-// define POST on login.php
-// check if access with post
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $password = $_POST['password'];
@@ -23,74 +24,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
-    echo "Connected successfully</br>";
 
+    // check login
+    $stmt = $conn->prepare("SELECT pw, status FROM users WHERE username = ?");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $stmt->bind_result($hashedPassword, $status);
+    $stmt->fetch();
 
-    // check user 
-    $sql = "SELECT * FROM `users` WHERE username = '$username'";
-
-    $query = mysqli_query($conn, $sql); // sqlobject 
-
-    if ($query != false) {
-
-
-        $result = mysqli_fetch_assoc($query); // turn to assoc array
-        // ['username' =>'Arba','password'=>'arba123','status'=>'user','id'=> 8724]
-
-        if ($result) {
-            // Access the 'username' field from the result
-            $resultstring = $result['username']; 
-            echo $resultstring;
-            echo "</br>";
-        } else {
-            echo "No user found with username: $username";
-           // header('Location: registerForm.php');
-           return;
-            
+    if ($hashedPassword && password_verify($password, $hashedPassword)) {
+        if ($status === 'admin') {
+            header("Location: admin_dashboard.php");
+        } else if ($status === 'user') {
+            header("Location: user_home.php");
         }
+    exit;
+} else {
+    $error = "Incorrect username or password!";
+}
+}
 
-        // check pw of user
-        $sqlPw = "SELECT pw FROM `users` WHERE username = '$username' AND pw = '$password';";
-
-        $queryPw = mysqli_query($conn, $sqlPw);
-
-        if ($queryPw != false) {
-
-            $resultPw = mysqli_fetch_assoc($queryPw); // turn to assoc array
-            // ['password'=>'arba123']
-
-            if (!$resultPw) {
-                echo "The password is incorrect!";
-            }
-        
-
-           //check the status of user
-           $sqlS = "SELECT status FROM users WHERE username = '$username'";
-
-           $queryS = mysqli_query($conn, $sqlS);
-
-           $resultS = mysqli_fetch_assoc($queryS);
-
-    
-           if ($resultS['status'] == 'admin') {
-               header('Location: admin_dashboard.php');
-           } else if ($resultS['status'] == 'user') {
-               header('Location: user_home.php');
-           } else {
-               echo "Incorrect password!";
-           }
-          } else {
-           echo "User does not exist!";
-
-        }
-
-    }
-
-
-
-
-
-    }
 
 
 ?>
@@ -100,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles/login.css">
     <script type="text/javascript" src="./js/login.js"></script>
-    <title>ProRealEstate</title>
+    <title>ProRealEstate-Login</title>
 
 
 </head>
@@ -112,7 +65,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="navbar">
             <img src="img/logo.png" class="logo">
             <ul>
-                <!--****** change all pages -->
                 <li><a href="main.php">Home</a></li>
                 <li><a href="#">About</a></li>
                 <li><a href="agents.php">Agents</a></li>
@@ -127,7 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div>
             <div class="login-form">
 
-                <form method="POST" action="/login.php" onsubmit="validateUser()">
+                <form method="POST" action="login.php" onsubmit="validateUser()">
                     <label for="first">
                         Username:
                     </label>
@@ -143,7 +95,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             Submit
                         </button>
                     </div>
+                    <p id=isLoginCorrect></p>
                 </form>
+
+                <?php if ($error): ?>
+                    <p style="color: red;"><?= $error ?></p>
+                <?php endif; ?>
+
 
 
             </div>

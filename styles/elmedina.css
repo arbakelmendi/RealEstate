@@ -170,7 +170,7 @@ header ul{
     transition: 0.3s;
 }
 .contact-input:focus{
-    color:#000;
+    color: black;
 }
 
 .input-wrap label{
@@ -354,3 +354,4 @@ textarea.contact-input ~ .icon{
     font-size: 0.87rem;
 }
 }
+
