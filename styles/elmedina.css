@@ -170,7 +170,7 @@ header ul{
     transition: 0.3s;
 }
 .contact-input:hover{
-    color: #0000 ;
+    color: #fff;
 }
 
 .input-wrap label{
