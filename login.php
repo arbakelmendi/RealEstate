@@ -33,6 +33,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->fetch();
 
     if ($hashedPassword && password_verify($password, $hashedPassword)) {
+        $_SESSION['username'] = $username;
+        $_SESSION['status'] = $status;
         if ($status === 'admin') {
             header("Location: admin_dashboard.php");
         } else if ($status === 'user') {
