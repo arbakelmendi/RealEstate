@@ -79,6 +79,9 @@
                                     <input type="file" name="attachment">
                                 </button>
                                 <input type="submit" value="Send message" class="btn">
+                                <div id="confirmationMessage" class="hidden">
+                                    Ju na keni kontaktuar me sukses, njëri nga agjentët tanë do t'ju njoftojë për gjithçka.
+                                </div>
                             </div>
                         </form>
                     </div>
@@ -89,47 +92,49 @@
     </main>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/js/all.min.js"></script>
     <script src="js/app.js"></script>
+    <script>
+    document.getElementById("sendMessage").addEventListener("click", function() {
+    let messageBox = document.getElementById("confirmationMessage");
+    messageBox.classList.remove("hidden");
+    messageBox.classList.add("message-box");
+});
+</script>
 </body>
 </html>
 <?php
 
     $servername="localhost";
     $username="root";
-    $pasword="";
+    $password="";
     $db="web";
 
-    $conn="";
+    $conn=mysqli_connect($servername, $username, $password, $db);
 
-    try{
-        $conn=mysqli_connect(
-            $servername,
-            $username,
-            $pasword,
-            $db);
-    }catch(mysqli_sql_exception){
-        echo"Lidhja me databazen deshtoi";
+    if(!$conn){
+        die("Lidhja me databazen deshtoi");
     }
 
 
     if($_SERVER["REQUEST_METHOD"]=="POST"){
-        $firstName=$_POST["FirstName"];
-        $lastName=$_POST["LastName"];
-        $email=$_POST["email"];
+        $name=$_POST["FirstName"];
+        $surname=$_POST["LastName"];
+        $username=$_POST["Email"];
+        $message=$_POST["Message"];
         //$attachment=$_FILES["attachment"];
 
-        $checkQuery = "SELECT * FROM contacts WHERE first_name = '$firstName' AND last_name = '$lastName' AND email = '$email'";
-        $result = mysqli_query($conn, $checkQuery);
-        
-        if (mysqli_num_rows($result) > 0) {
-            echo "Këto të dhëna tashmë ekzistojnë në databazë!";
-        } else {
-             $sql = "INSERT INTO contacts (first_name, last_name, email) VALUES ('$firstName', '$lastName', '$email');";
+        if(empty($name)){
+            echo "Ju lutemi shkruani emrin tuaj";
         }
-        if(mysqli_query($conn, $sql)){
-            echo"Te gjitha te dhenat u ruan me sukses";
+        else if(empty($surname)){
+            echo "Ju lutemi shkruani mbiemrin tuaj";
+        }
+        else if(empty($username)){
+            echo "Ju lutemi shkruani email-in tuaj";
         }
         else{
-            echo"Gabim ne ruajtjen e te dhenave";
+            $sql = "INSERT INTO users (name, surname, username, message ) VALUES ('$name', '$surname', '$username', '$message');";
+            mysqli_query($conn, $sql);
+            echo"Ju na keni kontaktuar me sukses njeri nga agjentet tone do te ju njoftoje per gjithçka";
         }
     }
 
