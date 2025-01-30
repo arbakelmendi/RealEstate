@@ -79,12 +79,8 @@ header ul{
     align-items: center;
     justify-content: center;
     width: 100%;
-    min-height: 100vh; 
-    padding: 1rem;
-    box-sizing: border-box;
-
-    background-image: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)), url(./img/background.jpg);
-
+    height: 100vh;
+    background-image: linear-gradient(rgba(62, 51, 51, 0.75), rgba(62,51,51,0.75)), url(../img/background.jpg);
     background-size: cover;
     background-position: center; 
 }
