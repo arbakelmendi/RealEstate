@@ -7,47 +7,45 @@ if (!isset($_SESSION['username'])) {
     exit;
 }
 
-    $servername="localhost";
-    $username="root";
-    $password="";
-    $db="web";
+$servername = "localhost";
+$username = "root";
+$password = "";
+$db = "web";
 
-    $conn=mysqli_connect($servername, $username, $password, $db);
+$conn = mysqli_connect($servername, $username, $password, $db);
 
-    if(!$conn){
-        die("Lidhja me databazen deshtoi");
+if (!$conn) {
+    die("Lidhja me databazen deshtoi");
+}
+
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $name = $_POST["FirstName"];
+    $surname = $_POST["LastName"];
+    $username = $_POST["Email"];
+    $message = $_POST["Message"];
+    //$attachment=$_FILES["attachment"];
+
+    if (empty($name)) {
+        echo "Ju lutemi shkruani emrin tuaj";
+    } else if (empty($surname)) {
+        echo "Ju lutemi shkruani mbiemrin tuaj";
+    } else if (empty($username)) {
+        echo "Ju lutemi shkruani email-in tuaj";
+    } else {
+        $sql = "INSERT INTO users (name, surname, username, message ) VALUES ('$name', '$surname', '$username', '$message');";
+        mysqli_query($conn, $sql);
+        echo "Ju na keni kontaktuar me sukses njeri nga agjentet tone do te ju njoftoje per gjithçka";
     }
+}
 
-
-    if($_SERVER["REQUEST_METHOD"]=="POST"){
-        $name=$_POST["FirstName"];
-        $surname=$_POST["LastName"];
-        $username=$_POST["Email"];
-        $message=$_POST["Message"];
-        //$attachment=$_FILES["attachment"];
-
-        if(empty($name)){
-            echo "Ju lutemi shkruani emrin tuaj";
-        }
-        else if(empty($surname)){
-            echo "Ju lutemi shkruani mbiemrin tuaj";
-        }
-        else if(empty($username)){
-            echo "Ju lutemi shkruani email-in tuaj";
-        }
-        else{
-            $sql = "INSERT INTO users (name, surname, username, message ) VALUES ('$name', '$surname', '$username', '$message');";
-            mysqli_query($conn, $sql);
-            echo"Ju na keni kontaktuar me sukses njeri nga agjentet tone do te ju njoftoje per gjithçka";
-        }
-    }
-
-    mysqli_close($conn);
+mysqli_close($conn);
 
 ?>
 <!DOCTYPE html>
 <html lang="en">
-<head>    
+
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact us</title>
@@ -73,7 +71,7 @@ if (!isset($_SESSION['username'])) {
 <body>
     <header>
 
-            
+
         <div class="container">
             <ul>
                 <li>
@@ -147,7 +145,7 @@ if (!isset($_SESSION['username'])) {
                                     Ju na keni kontaktuar me sukses, njëri nga agjentët tanë do t'ju njoftojë për gjithçka.
                                 </div>
                             </div>
-                        
+
                             <?php if ($showMessage): ?>
                                 <div class="message-box">Message sent successfully!</div>
                             <?php endif; ?>
@@ -161,13 +159,12 @@ if (!isset($_SESSION['username'])) {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/js/all.min.js"></script>
     <script src="js/app.js"></script>
     <script>
-    document.getElementById("sendMessage").addEventListener("click", function() {
-    let messageBox = document.getElementById("confirmationMessage");
-    messageBox.classList.remove("hidden");
-    messageBox.classList.add("message-box");
-});
-</script>
+        document.getElementById("sendMessage").addEventListener("click", function() {
+            let messageBox = document.getElementById("confirmationMessage");
+            messageBox.classList.remove("hidden");
+            messageBox.classList.add("message-box");
+        });
+    </script>
 </body>
 
 </html>
-
