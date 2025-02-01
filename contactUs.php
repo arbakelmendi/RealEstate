@@ -147,7 +147,7 @@ mysqli_close($conn);
                             </div>
 
                             <?php if ($showMessage): ?>
-                                <div class="message-box">Message sent successfully!</div>
+                                <div class="message-box">Ju na keni kontaktuar me sukses, njëri nga agjentët tanë do t'ju njoftojë për gjithçka.</div>
                             <?php endif; ?>
                         </form>
                     </div>
