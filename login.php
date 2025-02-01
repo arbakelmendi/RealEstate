@@ -69,7 +69,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <img src="img/logo.png" class="logo">
             <ul>
                 <li><a href="main.php">Home</a></li>
-                <li><a href="#">About</a></li>
                 <li><a href="agents.php">Agents</a></li>
                 <li><a href="contactUs.php">Contact</a></li>
                 <li><a href="login.php" class="h-btn1">Login</a></li>

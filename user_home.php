@@ -1,3 +1,12 @@
+<?php
+session_start();
+if (!isset($_SESSION['username'])) {
+    header("Location: login.php");
+    exit;
+}
+//$username = $_POST['username'];
+echo "Welcome!";
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,8 +19,3 @@
 <a href="login.php"></a>
 </body>
 </html>
-
-<?php
-//$username = $_POST['username'];
-echo "Welcome!";
-?>

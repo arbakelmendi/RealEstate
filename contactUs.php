@@ -1,3 +1,49 @@
+<?php
+
+session_start();
+if (!isset($_SESSION['username'])) {
+    header("Location: login.php");
+    exit;
+}
+
+    $servername="localhost";
+    $username="root";
+    $password="";
+    $db="web";
+
+    $conn=mysqli_connect($servername, $username, $password, $db);
+
+    if(!$conn){
+        die("Lidhja me databazen deshtoi");
+    }
+
+
+    if($_SERVER["REQUEST_METHOD"]=="POST"){
+        $name=$_POST["FirstName"];
+        $surname=$_POST["LastName"];
+        $username=$_POST["Email"];
+        $message=$_POST["Message"];
+        //$attachment=$_FILES["attachment"];
+
+        if(empty($name)){
+            echo "Ju lutemi shkruani emrin tuaj";
+        }
+        else if(empty($surname)){
+            echo "Ju lutemi shkruani mbiemrin tuaj";
+        }
+        else if(empty($username)){
+            echo "Ju lutemi shkruani email-in tuaj";
+        }
+        else{
+            $sql = "INSERT INTO users (name, surname, username, message ) VALUES ('$name', '$surname', '$username', '$message');";
+            mysqli_query($conn, $sql);
+            echo"Ju na keni kontaktuar me sukses njeri nga agjentet tone do te ju njoftoje per gjithçka";
+        }
+    }
+
+    mysqli_close($conn);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>    
@@ -100,7 +146,7 @@
                                     Ju na keni kontaktuar me sukses, njëri nga agjentët tanë do t'ju njoftojë për gjithçka.
                                 </div>
                             </div>
-                            <!-- Mesazhi i suksesit -->
+                        
                             <?php if ($showMessage): ?>
                                 <div class="message-box">Message sent successfully!</div>
                             <?php endif; ?>
@@ -123,43 +169,4 @@
 </body>
 
 </html>
-<?php
 
-    $servername="localhost";
-    $username="root";
-    $password="";
-    $db="web";
-
-    $conn=mysqli_connect($servername, $username, $password, $db);
-
-    if(!$conn){
-        die("Lidhja me databazen deshtoi");
-    }
-
-
-    if($_SERVER["REQUEST_METHOD"]=="POST"){
-        $name=$_POST["FirstName"];
-        $surname=$_POST["LastName"];
-        $username=$_POST["Email"];
-        $message=$_POST["Message"];
-        //$attachment=$_FILES["attachment"];
-
-        if(empty($name)){
-            echo "Ju lutemi shkruani emrin tuaj";
-        }
-        else if(empty($surname)){
-            echo "Ju lutemi shkruani mbiemrin tuaj";
-        }
-        else if(empty($username)){
-            echo "Ju lutemi shkruani email-in tuaj";
-        }
-        else{
-            $sql = "INSERT INTO users (name, surname, username, message ) VALUES ('$name', '$surname', '$username', '$message');";
-            mysqli_query($conn, $sql);
-            echo"Ju na keni kontaktuar me sukses njeri nga agjentet tone do te ju njoftoje per gjithçka";
-        }
-    }
-
-    mysqli_close($conn);
-
-?>
