@@ -1,7 +1,13 @@
 <?php
 
 session_start();
-if (!isset($_SESSION['username'])) {
+
+
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Pragma: no-cache");
+header("Expires: Sat, 01 Jan 2000 00:00:00 GMT");
+
+if (!isset($_SESSION['logged_in']) || !isset($_SESSION['username'])) {
     header("Location: login.php");
     exit;
 }
