@@ -1,65 +1,32 @@
-
-<?php
-
-$showMessage = false;
-
-$host = "46.99.54.196";
-$username = "project_group";
-$password = "aaelocalhost";
-$database = "realestate";
-
-$conn = new mysqli($host, $username, $password, $database);
-
-if ($conn->connect_error) {
-    die("Lidhja dështoi: " . $conn->connect_error);
-}
-echo "Lidhja u krye me sukses!";
-
-
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $name = $_POST["FirstName"];
-    $surname = $_POST["LastName"];
-    $username = $_POST["Email"];
-    $message = $_POST["Message"];
-    //$attachment=$_FILES["attachment"];
-
-    if (empty($name)) {
-        echo "Ju lutemi shkruani emrin tuaj";
-    } else if (empty($surname)) {
-        echo "Ju lutemi shkruani mbiemrin tuaj";
-    } else if (empty($username)) {
-        echo "Ju lutemi shkruani email-in tuaj";
-    } else {
-        $sql = "INSERT INTO users (name, surname, username, message ) VALUES ('$name', '$surname', '$username', '$message');";
-        mysqli_query($conn, $sql);
-        echo "Ju na keni kontaktuar me sukses njeri nga agjentet tone do te ju njoftoje per gjithçka";
-    }
-
-    if (!empty($name) && !empty($username) && !empty($message)) {
-       
-        $showMessage = true;
-    }
-}
-
-
-mysqli_close($conn);
-
-?>
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+<head>    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact us</title>
     <link rel="stylesheet" href="styles/elmedina.css">
+    <style>
+        .hidden {
+            display: none;
+        }
+
+        .message-box {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 14px;
+        }
+    </style>
 </head>
 
 <body>
     <header>
 
-
+            
         <div class="container">
             <ul>
                 <li>
@@ -129,11 +96,14 @@ mysqli_close($conn);
                                     <input type="file" name="attachment">
                                 </button>
                                 <input type="submit" value="Send message" class="btn">
-                                <div id="successMessage" style="display: none; color: green; margin-top: 10px;">
-                                    Message sent successfully!
+                                <div id="confirmationMessage" class="hidden">
+                                    Ju na keni kontaktuar me sukses, njëri nga agjentët tanë do t'ju njoftojë për gjithçka.
                                 </div>
-
                             </div>
+                            <!-- Mesazhi i suksesit -->
+                            <?php if ($showMessage): ?>
+                                <div class="message-box">Message sent successfully!</div>
+                            <?php endif; ?>
                         </form>
                     </div>
                 </div>
@@ -144,12 +114,52 @@ mysqli_close($conn);
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/js/all.min.js"></script>
     <script src="js/app.js"></script>
     <script>
-        document.getElementById("sendMessage").addEventListener("click", function() {
-            let messageBox = document.getElementById("confirmationMessage");
-            messageBox.classList.remove("hidden");
-            messageBox.classList.add("message-box");
-        });
-    </script>
+    document.getElementById("sendMessage").addEventListener("click", function() {
+    let messageBox = document.getElementById("confirmationMessage");
+    messageBox.classList.remove("hidden");
+    messageBox.classList.add("message-box");
+});
+</script>
 </body>
 
 </html>
+<?php
+
+    $servername="localhost";
+    $username="root";
+    $password="";
+    $db="web";
+
+    $conn=mysqli_connect($servername, $username, $password, $db);
+
+    if(!$conn){
+        die("Lidhja me databazen deshtoi");
+    }
+
+
+    if($_SERVER["REQUEST_METHOD"]=="POST"){
+        $name=$_POST["FirstName"];
+        $surname=$_POST["LastName"];
+        $username=$_POST["Email"];
+        $message=$_POST["Message"];
+        //$attachment=$_FILES["attachment"];
+
+        if(empty($name)){
+            echo "Ju lutemi shkruani emrin tuaj";
+        }
+        else if(empty($surname)){
+            echo "Ju lutemi shkruani mbiemrin tuaj";
+        }
+        else if(empty($username)){
+            echo "Ju lutemi shkruani email-in tuaj";
+        }
+        else{
+            $sql = "INSERT INTO users (name, surname, username, message ) VALUES ('$name', '$surname', '$username', '$message');";
+            mysqli_query($conn, $sql);
+            echo"Ju na keni kontaktuar me sukses njeri nga agjentet tone do te ju njoftoje per gjithçka";
+        }
+    }
+
+    mysqli_close($conn);
+
+?>

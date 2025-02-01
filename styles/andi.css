@@ -1,4 +1,4 @@
-/* General Styles */
+
 body {
     margin: 0;
     padding: 0;
@@ -6,6 +6,11 @@ body {
     background-color:white;
     color:black;
 }
+
+
+
+
+
 
 .banner{
     width: 100%;
@@ -82,7 +87,7 @@ body {
     gap: 20px;
 }
 
-/* Agents List */
+
 .agents {
     flex: 3;
     display: flex;
@@ -134,7 +139,7 @@ body {
 .agents :hover{
     cursor: pointer;
 }
-/* Sidebar */
+
 .sidebar {
     flex: 1;
     display: flex;
@@ -167,6 +172,8 @@ body {
     border-radius: 5px;
 }
 
+
+
 .find-agent button {
     background:blue;
     color:white;
@@ -194,7 +201,9 @@ body {
 
 }
 
-/* Responsive Design */
+  
+
+
 @media (max-width: 768px) {
     .main-content {
         flex-direction: column;
@@ -214,3 +223,57 @@ body {
         margin-bottom: 10px;
     }
 }
+
+
+.banner{
+    width: 100%;
+    height: 100vh;
+    background-image: linear-gradient(rgba(62, 51, 51, 0.75), rgba(62,51,51,0.75)), url(../img/background.jpg);
+    background-size: cover;
+    background-position: center;
+  }
+
+  .navbar{
+    width: 85%;
+    margin: auto;
+    padding: 35px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo{
+    width: 120px;
+    cursor: pointer;
+}
+
+.navbar ul li{
+    list-style: none;
+    display: inline-block;
+    margin: 0 10px;
+    position: relative;
+} 
+
+.navbar ul li a{
+    text-decoration: none;
+    color: #fff;
+    text-transform: uppercase;
+
+}
+
+.navbar ul li::after{
+    content: '';
+    height: 3px;
+    width: 0;
+    background: #009688;
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    transition: 0.5s;
+
+}
+
+.navbar ul li:hover::after{
+    width: 100%;
+}
+
