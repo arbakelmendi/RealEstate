@@ -1,15 +1,12 @@
 <?php 
 session_start();
 
-
-header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
-header("Pragma: no-cache");
-header("Expires: Sat, 01 Jan 2000 00:00:00 GMT");
-
-if (!isset($_SESSION['logged_in']) || !isset($_SESSION['username'])) {
+if (!isset($_SESSION['username'])) {
     header("Location: login.php");
     exit;
 }
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -36,11 +33,11 @@ if (!isset($_SESSION['logged_in']) || !isset($_SESSION['username'])) {
                     <li><a href="main.php">Home</a></li>
                     <li><a href="agents.php">Agents</a></li>
                     <li><a href="contactUs.php">Contact</a></li>
-                    <li><a href="login.php" class="h-btn1">Login</a></li>
-                    <li><a href="registerForm.php" class="h-btn2">Sign Up</a></li>
-
+                    <li><a href="logout.php">Logout</a></li>
+       
                 </ul>
             </div>
+    
           
             <div class="slideshow-wrapper">
                 <div class="slideshow-container">

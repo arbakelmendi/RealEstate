@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($status === 'admin') {
             header("Location: admin_dashboard.php");
         } else if ($status === 'user') {
-            header("Location: user_home.php");
+            header("Location: main.php");
         }
     exit;
 } else {
