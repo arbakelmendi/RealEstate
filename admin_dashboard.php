@@ -146,7 +146,6 @@ function getTotalMessages() {
     <div class="navbar">
         <ul>
             <li><a href="admin_dashboard.php">Dashboard</a></li>
-            <li><a href="manage_users.php">Manage Users</a></li>
             <li><a href="logout.php">Logout</a></li>
         </ul>
     </div>
