@@ -1,114 +1,121 @@
 <?php
 
-class Database {
-    private $host = 'localhost';
-    private $dbname = 'web_project';
-    private $username = 'root';
-    private $password = '';
-    private $pdo;
+session_start();
 
-    public function __construct() {
-        try {
-            $this->pdo = new PDO("mysql:host={$this->host};dbname={$this->dbname}", $this->username, $this->password);
-            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch (PDOException $e) {
-            die("Error connecting to database: " . $e->getMessage());
-        }
-    }
-
-    public function getConnection() {
-        return $this->pdo;
-    }
+if (!isset($_SESSION['username'])) {
+    header("Location: login.php");
+    exit;
 }
 
-class Item {
-    private $pdo;
-
-    public function __construct($pdo) {
-        $this->pdo = $pdo;
-    }
-
-    public function getAllItems() {
-        $stmt = $this->pdo->query("SELECT * FROM items");
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    public function addItem($name, $description) {
-        $sql = "INSERT INTO items (name, description) VALUES (:name, :description)";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute(['name' => $name, 'description' => $description]);
-    }
-}
 ?>
 
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic PHP Project</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Agent</title>
+    <link rel="stylesheet" href="styles/andi.css">
 </head>
+
 <body>
-    <h1>Item List</h1>
-    <form action="insert.php" method="POST">
-        <input type="text" name="name" placeholder="Item Name" required>
-        <input type="text" name="description" placeholder="Description" required>
-        <button type="submit">Add Item</button>
-    </form>
 
-    <h2>All Items:</h2>
-    <ul>
-        <?php
-        require 'Database.php';
-        $db = new Database();
-        $item = new Item($db->getConnection());
-        $items = $item->getAllItems();
+    <div class="banner">
+        <div class="navbar">
+            <img src="img/logo.png" class="logo">
+            <ul>
+                <li><a href="main.php">Home</a></li>
+                <li><a href="agents.php">Agents</a></li>
+                <li><a href="contactUs.php">Contact</a></li>
+                <li><a href="logout.php">Logout</a></li>
 
-        foreach ($items as $row) {
-            echo "<li>" . htmlspecialchars($row['name']) . ": " . htmlspecialchars($row['description']) . "</li>";
-        }
-        ?>
-    </ul>
+            </ul>
+        </div>
+      
+    <div class="container">
+
+
+
+        <div class="main-content">
+
+            <div class="agents">
+                <div class="agent-card">
+                    <img src="./img/logo.png.webp" alt="Agent Logo">
+                    <div class="agent-details">
+                        <h3>Elmedina Menxhiqi</h3>
+                        <p>Agent</p>
+                        <p>ElmedinaMenxhiqi@gmail.com</p>
+                        <a href="#">View Listings</a>
+                    </div>
+                </div>
+                <div class="agent-card">
+                    <img src="./img/logo.png.webp" alt="Agent Logo">
+                    <div class="agent-details">
+                        <h3>Olis Osmani</h3>
+                        <p>Agent</p>
+                        <p>OlisOsmani2005@gmail.com</p>
+                        <a href="#">View Listings</a>
+                    </div>
+                </div>
+                <div class="agent-card">
+                    <img src="./img/logo.png.webp" alt="Agent Logo">
+                    <div class="agent-details">
+                        <h3>Andi Dragusha</h3>
+                        <p>Agent</p>
+                        <p>Andidragusha541@gmail.com</p>
+                        <a href="#">View Listings</a>
+                    </div>
+                </div>
+                <div class="agent-card">
+                    <img src="./img/logo.png.webp" alt="Agent Logo">
+                    <div class="agent-details">
+                        <h3>Arba Kelmendi</h3>
+                        <p>Agent</p>
+                        <p>Arbakelmendi@gmail.com</p>
+                        <a href="#">View Listings</a>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="sidebar">
+
+                <div class="find-agent">
+                    <h3>Find Agent</h3>
+                    <input type="text" placeholder="Enter agent name">
+                    <select>
+                        <option>All Categories</option>
+                    </select>
+                    <select>
+                        <option>All Cities</option>
+                    </select>
+                    <button>Search Agent</button>
+                </div>
+
+                <div class="recent-viewed">
+                    <h3>Recent Viewed</h3>
+                    <div class="listing">
+                        <img src="./img/banesa.jpg">
+                        <p>BANESE ME QIRA NE DARDANI</p>
+                        <p>$450</p>
+                    </div>
+                    <div class="listing">
+                        <img src="./img/banesa2.jpg">
+                        <p>BANESE ME QIRA NE ULPIAN</p>
+                        <p>$530</p>
+                    </div>
+                    <div class="listing">
+                        <img src="./img/banesa3.jpeg">
+                        <p>BANESE ME QIRA NE PEJTON </p>
+                        <p>$400</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
 </body>
+
 </html>
-
-
-<?php
-require 'Database.php';
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $name = $_POST['name'];
-    $description = $_POST['description'];
-
-    $db = new Database();
-    $item = new Item($db->getConnection());
-    $item->addItem($name, $description);
-
-    header('Location: index.php');
-}
-?>
-
-/* styles.css */
-body {
-    font-family: Arial, sans-serif;
-    padding: 20px;
-    max-width: 600px;
-    margin: auto;
-}
-input {
-    margin: 5px;
-    padding: 8px;
-    width: calc(100% - 16px);
-}
-button {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    cursor: pointer;
-}
-button:hover {
-    background-color: #0056b3;
-}

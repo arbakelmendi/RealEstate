@@ -1,12 +1,13 @@
 <?php
 session_start();
 
-header("Cache-Control: no-cache, no-store, must-revalidate"); 
-header("Pragma: no-cache"); 
-header("Expires: 0"); 
+header("Cache-Control: no-cache, no-store, must-revalidate");
+header("Pragma: no-cache");
+header("Expires: 0");
 
 require_once 'Database.php';
 require_once 'Admin.php';
+require_once 'User.php'; // Make sure the User class is included
 
 if (!isset($_SESSION['username']) || $_SESSION['status'] !== 'admin') {
     header("Location: login.php");
@@ -15,10 +16,33 @@ if (!isset($_SESSION['username']) || $_SESSION['status'] !== 'admin') {
 
 $db = new Database();
 $admin = new Admin($db->getConnection());
+$user = new User($db->getConnection());
+
+// Get the ID of the currently logged-in admin (the one creating the user)
+$admin_id = $_SESSION['user_id'];  // Assuming 'user_id' is stored in session
+
+// Get statistics for the dashboard
 $users = $admin->getUsers();
 $totalUsers = $admin->getTotalUsers();
 $totalProperties = $admin->getTotalProperties();
 $totalMessages = $admin->getTotalMessages();
+
+// Handle form submission for creating a new user
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'], $_POST['password'], $_POST['status'])) {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+    $status = $_POST['status'];
+
+    // Hash the password for security
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+    // Call the createUser method with created_by as admin_id
+    if ($user->createUser($username, $hashedPassword, $status, $admin_id)) {
+        echo "User created successfully!";
+    } else {
+        echo "Error creating user.";
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -101,6 +125,20 @@ $totalMessages = $admin->getTotalMessages();
 
     <h1>Welcome, Admin!</h1>
 
+    <h2>Create New User</h2>
+    <form method="POST" action="admin_dashboard.php">
+        <label>Username:</label>
+        <input type="text" name="username" required>
+        <label>Password:</label>
+        <input type="password" name="password" required>
+        <label>Status:</label>
+        <select name="status">
+            <option value="admin">Admin</option>
+            <option value="user">User</option>
+        </select>
+        <button type="submit">Create User</button>
+    </form>
+
     <div class="dashboard">
         <h2>Statistics</h2>
         <div class="stats">
@@ -132,6 +170,3 @@ $totalMessages = $admin->getTotalMessages();
     </div>
 </body>
 </html>
-  
-    
-

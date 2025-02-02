@@ -1,44 +1,22 @@
 <?php
 session_start();
 
-session_start();
-if (!isset($_SESSION['username'])) {
-    header("Location: login.php");
-    exit;
-}
-
 if (!isset($_SESSION['username']) || $_SESSION['status'] !== 'admin') {
     header("Location: login.php");
     exit;
 }
 
+require_once 'User.php';
+
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
-    $userId = intval($_GET['id']); 
+    $userId = intval($_GET['id']);
+    $user = new User();
 
-    
-    $servername = "127.0.0.1";
-    $usernameDB = "root";
-    $passwordDB = "";
-    $db = "RealEstate";
-
-    $conn = new mysqli($servername, $usernameDB, $passwordDB, $db);
-
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-
-   
-    $stmt = $conn->prepare("DELETE FROM users WHERE id = ?");
-    $stmt->bind_param("i", $userId);
-
-    if ($stmt->execute()) {
+    if ($user->deleteUserById($userId)) {
         echo "User deleted successfully.";
     } else {
         echo "Error deleting user.";
     }
-
-    $stmt->close();
-    $conn->close();
 
     header("Location: admin_dashboard.php");
     exit;

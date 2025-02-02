@@ -1,58 +1,41 @@
 <?php
 session_start();
 
-session_start();
-if (!isset($_SESSION['username'])) {
-    header("Location: login.php");
-    exit;
-}
-
+// Redirect if the user is not logged in or is not an admin
 if (!isset($_SESSION['username']) || $_SESSION['status'] !== 'admin') {
     header("Location: login.php");
     exit;
 }
 
-$servername = "127.0.0.1";
-$usernameDB = "root";
-$passwordDB = "";
-$db = "RealEstate";
+require_once 'Database.php';
+require_once 'User.php';
 
-$conn = new mysqli($servername, $usernameDB, $passwordDB, $db);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+$db = new Database();
+$user = new User($db);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = $_POST['id'];
     $username = $_POST['username'];
     $status = $_POST['status'];
 
-    $stmt = $conn->prepare("UPDATE users SET username = ?, status = ? WHERE id = ?");
-    $stmt->bind_param("ssi", $username, $status, $id);
-
-    if ($stmt->execute()) {
-        echo "User updated successfully!";
+    if ($user->updateUser($id, $username, $status)) {
         header("Location: admin_dashboard.php");
         exit;
     } else {
-        echo "Error updating user: " . $conn->error;
+        echo "Error updating user.";
     }
-
-    $stmt->close();
 } else {
     $id = $_GET['id'];
+    $userData = $user->getUserById($id);
 
-    $stmt = $conn->prepare("SELECT username, status FROM users WHERE id = ?");
-    $stmt->bind_param("i", $id);
-    $stmt->execute();
-    $stmt->bind_result($username, $status);
-    $stmt->fetch();
+    if (!$userData) {
+        echo "User not found.";
+        exit;
+    }
 
-    $stmt->close();
+    $username = $userData['username'];
+    $status = $userData['status'];
 }
-
-$conn->close();
 ?>
 
 <!DOCTYPE html>

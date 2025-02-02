@@ -1,12 +1,19 @@
 <?php
+
+
 require_once 'Database.php';
 
 class User {
     private $pdo;
 
-    public function __construct($pdo) {
-        $this->pdo = $pdo;
+    public function __construct() {
+        $database = new Database();
+        $this->pdo = $database->getConnection();
     }
+
+    public function isAdmin() {
+        return isset($_SESSION['status']) && $_SESSION['status'] === 'admin';
+    } 
 
     public function authenticate($username, $password) {
         $stmt = $this->pdo->prepare("SELECT pw, status FROM users WHERE username = ?");
@@ -42,5 +49,54 @@ class User {
             return "Registration failed. Please try again.";
         }
     }
+
+    public function deleteUserById($userId) {
+        $stmt = $this->pdo->prepare("DELETE FROM users WHERE id = ?");
+        $stmt->bindParam(1, $userId, PDO::PARAM_INT);
+        
+        return $stmt->execute();
+    }
+
+    public function getUserById($id) {
+        $stmt = $this->pdo->prepare("SELECT username, status FROM users WHERE id = ?");
+        $stmt->bindParam(1, $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function updateUser($id, $username, $status) {
+        $stmt = $this->pdo->prepare("UPDATE users SET username = ?, status = ? WHERE id = ?");
+        $stmt->bindParam(1, $username);
+        $stmt->bindParam(2, $status);
+        $stmt->bindParam(3, $id, PDO::PARAM_INT);
+
+        try {
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log("Update user error: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function createUser($username, $password, $status) {
+        // Prepare SQL query
+        $query = "INSERT INTO users (username, pw, status) VALUES (:username, :password, :status)";
+
+        // Prepare statement
+        $stmt = $this->pdo->prepare($query);
+
+        // Bind parameters
+        $stmt->bindParam(':username', $username);
+        $stmt->bindParam(':password', $password);
+        $stmt->bindParam(':status', $status);
+
+        // Execute the query
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
 }
 ?>
