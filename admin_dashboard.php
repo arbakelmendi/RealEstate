@@ -8,6 +8,7 @@ header("Expires: 0");
 require_once 'Database.php';
 require_once 'Admin.php';
 require_once 'User.php'; 
+require_once 'ContactForm.php';
 
 if (!isset($_SESSION['username']) || $_SESSION['status'] !== 'admin') {
     header("Location: login.php");
@@ -17,6 +18,8 @@ if (!isset($_SESSION['username']) || $_SESSION['status'] !== 'admin') {
 $db = new Database();
 $admin = new Admin($db->getConnection());
 $user = new User($db->getConnection());
+$ContactForm = new ContactForm($db->getConnection());
+$messages = $ContactForm->getAllMessages();
 
 
 
@@ -24,7 +27,8 @@ $user = new User($db->getConnection());
 $users = $admin->getUsers();
 $totalUsers = $admin->getTotalUsers();
 $totalProperties = $admin->getTotalProperties();
-$totalMessages = $admin->getTotalMessages();
+//$totalMessages = $admin->getTotalMessages();
+$messages = $ContactForm->getAllMessages();
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'], $_POST['password'], $_POST['status'])) {
@@ -149,6 +153,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'], $_POST['p
                 </tr>
             <?php endforeach; ?>
         </table>
+
+        <h2>Messages from Users</h2>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Email</th>
+                <th>Message</th>
+            </tr>
+            <?php foreach ($messages as $message): ?>
+                <tr>
+                    <td><?= $message['id'] ?></td>
+                    <td><?= $message['name'] ?></td>
+                    <td><?= $message['surname'] ?></td>
+                    <td><?= $message['email'] ?></td>
+                    <td><?= $message['message'] ?></td>
+                </tr>
+            <?php endforeach; ?>
+        </table>
+
     </div>
 </body>
 </html>
