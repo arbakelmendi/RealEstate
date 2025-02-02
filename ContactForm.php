@@ -15,7 +15,7 @@ class ContactForm {
             return "All fields are required.";
         }
 
-        $stmt = $this->conn->prepare("INSERT INTO users (name, surname, username, message) VALUES (?, ?, ?, ?)");
+        $stmt = $this->conn->prepare("INSERT INTO contactus (name, surname, username, message) VALUES (?, ?, ?, ?)");
         $stmt->bind_param("ssss", $name, $surname, $email, $message);
 
         if ($stmt->execute()) {
