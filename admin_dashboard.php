@@ -26,8 +26,8 @@ $messages = $ContactForm->getAllMessages();
 
 $users = $admin->getUsers();
 $totalUsers = $admin->getTotalUsers();
-$totalProperties = $admin->getTotalProperties();
-//$totalMessages = $admin->getTotalMessages();
+//$totalProperties = $admin->getTotalProperties();
+$totalMessages = $admin->getTotalMessages();
 $messages = $ContactForm->getAllMessages();
 
 
@@ -129,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'], $_POST['p
         <h2>Statistics</h2>
         <div class="stats">
             <h3>Total Users: <?= $totalUsers ?></h3>
-            <h3>Total Properties: <?= $totalProperties ?></h3>
+           <!-- <h3>Total Properties: <?= $totalProperties ?></h3> -->
             <h3>Total Messages: <?= $totalMessages ?></h3>
         </div>
 
@@ -160,7 +160,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'], $_POST['p
                 <th>ID</th>
                 <th>Name</th>
                 <th>Surname</th>
-                <th>Email</th>
                 <th>Message</th>
             </tr>
             <?php foreach ($messages as $message): ?>
@@ -168,7 +167,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'], $_POST['p
                     <td><?= $message['id'] ?></td>
                     <td><?= $message['name'] ?></td>
                     <td><?= $message['surname'] ?></td>
-                    <td><?= $message['email'] ?></td>
                     <td><?= $message['message'] ?></td>
                 </tr>
             <?php endforeach; ?>
