@@ -1,5 +1,7 @@
 <?php
 
+
+
 session_start();
 
 if (!isset($_SESSION['username'])) {
@@ -7,39 +9,28 @@ if (!isset($_SESSION['username'])) {
     exit;
 }
 
+
+require 'ContactForm.php';
+
+
 $servername = "localhost";
 $username = "root";
 $password = "";
 $db = "web";
 
-$conn = mysqli_connect($servername, $username, $password, $db);
-
-if (!$conn) {
-    die("Lidhja me databazen deshtoi");
-}
-
+$contactForm = new ContactForm($servername, $username, $password, $db);
+$message = "";
+$showMessage = false; 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST["FirstName"];
     $surname = $_POST["LastName"];
-    $username = $_POST["Email"];
-    $message = $_POST["Message"];
-    //$attachment=$_FILES["attachment"];
+    $email = $_POST["Email"];
+    $messageContent = $_POST["Message"];
 
-    if (empty($name)) {
-        echo "Ju lutemi shkruani emrin tuaj";
-    } else if (empty($surname)) {
-        echo "Ju lutemi shkruani mbiemrin tuaj";
-    } else if (empty($username)) {
-        echo "Ju lutemi shkruani email-in tuaj";
-    } else {
-        $sql = "INSERT INTO users (name, surname, username, message ) VALUES ('$name', '$surname', '$username', '$message');";
-        mysqli_query($conn, $sql);
-        echo "Ju na keni kontaktuar me sukses njeri nga agjentet tone do te ju njoftoje per gjithçka";
-    }
+    $message = $contactForm->submitForm($name, $surname, $email, $messageContent);
+    $showMessage = true; 
 }
-
-mysqli_close($conn);
 
 ?>
 <!DOCTYPE html>
@@ -147,8 +138,8 @@ mysqli_close($conn);
                             </div>
 
                             <?php if ($showMessage): ?>
-                                <div class="message-box">Ju na keni kontaktuar me sukses, njëri nga agjentët tanë do t'ju njoftojë për gjithçka.</div>
-                            <?php endif; ?>
+                                    <div class="message-box"><?php echo $message; ?></div>
+                                <?php endif; ?>
                         </form>
                     </div>
                 </div>
