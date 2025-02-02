@@ -1,13 +1,9 @@
 <?php
-
 class ContactForm {
-    private $conn;
+    private $pdo;
 
-    public function __construct($servername, $username, $password, $db) {
-        $this->conn = new mysqli($servername, $username, $password, $db);
-        if ($this->conn->connect_error) {
-            die("Connection failed: " . $this->conn->connect_error);
-        }
+    public function __construct($pdo) {
+        $this->pdo = $pdo;
     }
 
     public function submitForm($name, $surname, $email, $message) {
@@ -15,18 +11,17 @@ class ContactForm {
             return "All fields are required.";
         }
 
-        $stmt = $this->conn->prepare("INSERT INTO contactus (name, surname, username, message) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("ssss", $name, $surname, $email, $message);
+        $stmt = $this->pdo->prepare("INSERT INTO users (name, surname, username, message) VALUES (?, ?, ?, ?)");
+        $stmt->execute([$name, $surname, $email, $message]);
 
-        if ($stmt->execute()) {
-            return "Your message has been sent successfully.";
-        } else {
-            return "Error: " . $stmt->error;
-        }
+        return "Your message has been sent successfully.";
     }
 
-    public function __destruct() {
-        $this->conn->close();
+    public function getAllMessages() {
+        $stmt = $this->pdo->query("SELECT * FROM contactus");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
+
+
 ?>
