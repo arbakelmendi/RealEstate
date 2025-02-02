@@ -19,7 +19,6 @@ $admin = new Admin($db->getConnection());
 $user = new User($db->getConnection());
 
 
-$admin_id = $_SESSION['user_id'];  
 
 
 $users = $admin->getUsers();
@@ -32,16 +31,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'], $_POST['p
     $username = $_POST['username'];
     $password = $_POST['password'];
     $status = $_POST['status'];
+     
 
    
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-   
-    if ($user->createUser($username, $hashedPassword, $status, $admin_id)) {
-        echo "User created successfully!";
-    } else {
-        echo "Error creating user.";
-    }
 }
 ?>
 
@@ -118,6 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'], $_POST['p
 <body>
     <div class="navbar">
         <ul>
+            <li><a href="main.php">Home</a></li>
             <li><a href="admin_dashboard.php">Dashboard</a></li>
             <li><a href="logout.php">Logout</a></li>
         </ul>
@@ -125,19 +120,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'], $_POST['p
 
     <h1>Welcome, Admin!</h1>
 
-    <h2>Create New User</h2>
-    <form method="POST" action="admin_dashboard.php">
-        <label>Username:</label>
-        <input type="text" name="username" required>
-        <label>Password:</label>
-        <input type="password" name="password" required>
-        <label>Status:</label>
-        <select name="status">
-            <option value="admin">Admin</option>
-            <option value="user">User</option>
-        </select>
-        <button type="submit">Create User</button>
-    </form>
 
     <div class="dashboard">
         <h2>Statistics</h2>

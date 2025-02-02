@@ -20,7 +20,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
       
         $_SESSION['username'] = $username;
         $_SESSION['status'] = $authenticatedUser['status'];
-        $_SESSION['user_id'] = $user_id;
 
      
         if ($authenticatedUser['status'] === 'admin') {

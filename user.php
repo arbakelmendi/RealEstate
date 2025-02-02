@@ -78,25 +78,6 @@ class User {
         }
     }
 
-    public function createUser($username, $password, $status) {
-        // Prepare SQL query
-        $query = "INSERT INTO users (username, pw, status) VALUES (:username, :password, :status)";
-
-        // Prepare statement
-        $stmt = $this->pdo->prepare($query);
-
-        // Bind parameters
-        $stmt->bindParam(':username', $username);
-        $stmt->bindParam(':password', $password);
-        $stmt->bindParam(':status', $status);
-
-        // Execute the query
-        if ($stmt->execute()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
     
 }
 ?>
