@@ -1,111 +1,77 @@
-<!DOCTYPE html>
-<html>
-
 <?php
-
 session_start();
+require 'Database.php'; // Include the Database class
+require 'User.php'; // Include the User class
 
 $error = "";
-
-
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    $servername = "127.0.0.1";
-    $usernameDB = "root";
-    $passwordDB = "";
-    $db = "RealEstate";
+    // Create a Database object and get the connection
+    $db = new Database();
+    $pdo = $db->getConnection();
 
-    // Create connection
-    $conn = new mysqli($servername, $usernameDB, $passwordDB, $db);
+    // Create a User object and authenticate the user
+    $user = new User($pdo);
+    $authenticatedUser = $user->authenticate($username, $password);
 
-    // Check connection
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-
-    // check login
-    $stmt = $conn->prepare("SELECT pw, status FROM users WHERE username = ?");
-    $stmt->bind_param("s", $username);
-    $stmt->execute();
-    $stmt->bind_result($hashedPassword, $status);
-    $stmt->fetch();
-
-    if ($hashedPassword && password_verify($password, $hashedPassword)) {
+    if ($authenticatedUser) {
+        // Login successful
         $_SESSION['username'] = $username;
-        $_SESSION['status'] = $status;
-        if ($status === 'admin') {
+        $_SESSION['status'] = $authenticatedUser['status'];
+
+        // Redirect based on user status
+        if ($authenticatedUser['status'] === 'admin') {
             header("Location: admin_dashboard.php");
-        } else if ($status === 'user') {
+        } else if ($authenticatedUser['status'] === 'user') {
             header("Location: main.php");
         }
-    exit;
-} else {
-    $error = "Incorrect username or password!";
+        exit;
+    } else {
+        // Login failed
+        $error = "Incorrect username or password!";
+    }
 }
-}
-
-
-
 ?>
 
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles/login.css">
     <script type="text/javascript" src="./js/login.js"></script>
     <title>ProRealEstate-Login</title>
-
-
 </head>
-
-
 <body>
-
     <div class="banner">
         <div class="navbar">
             <img src="img/logo.png" class="logo">
             <ul>
                 <li><a href="login.php" class="h-btn1">Login</a></li>
                 <li><a href="registerForm.php" class="h-btn2">Sign Up</a></li>
-
             </ul>
         </div>
-
-
         <div>
             <div class="login-form">
-
-                <form method="POST" action="login.php" onsubmit="validateUser()">
-                    <label for="first">
-                        Username:
-                    </label>
+                <form method="POST" action="login.php" onsubmit="return validateUser()">
+                    <label for="username">Username:</label>
                     <input type="text" id="username" name="username" placeholder="Enter your Username" required>
 
-                    <label for="password">
-                        Password:
-                    </label>
+                    <label for="password">Password:</label>
                     <input type="password" id="password" name="password" placeholder="Enter your Password" required>
 
                     <div class="wrap">
-                        <button type="submit">
-                            Submit
-                        </button>
+                        <button type="submit">Submit</button>
                     </div>
-                    <p id=isLoginCorrect></p>
+                    <p id="isLoginCorrect"></p>
                 </form>
-
-                <?php if ($error): ?>
+                <?php if (!empty($error)): ?>
                     <p style="color: red;"><?= $error ?></p>
                 <?php endif; ?>
-
-
-
             </div>
         </div>
     </div>
 </body>
-
 </html>
