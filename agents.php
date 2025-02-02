@@ -1,5 +1,5 @@
 <?php
-// Database.php - Database connection class
+
 class Database {
     private $host = 'localhost';
     private $dbname = 'web_project';
@@ -41,7 +41,7 @@ class Item {
 }
 ?>
 
-<!-- index.php -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -74,7 +74,7 @@ class Item {
 </body>
 </html>
 
-<!-- insert.php -->
+
 <?php
 require 'Database.php';
 

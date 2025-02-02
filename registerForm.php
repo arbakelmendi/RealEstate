@@ -19,17 +19,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $passwordDB = "";
     $db = "RealEstate";
 
-    // Create connection
+   
     $conn = new mysqli($servername, $usernameDB, $passwordDB, $db);
 
-    // Check connection
+   
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
     //echo "Connected successfully</br>";
 
 
-    // check user 
+   
     $stmt = $conn->prepare("SELECT id FROM users WHERE username = ?");
     $stmt->bind_param("s", $username);
     $stmt->execute();

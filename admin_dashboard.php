@@ -1,89 +1,32 @@
 <?php
-
 session_start();
 
-if (!isset($_SESSION['username'])) {
-    header("Location: login.php");
-    exit;
-}
+header("Cache-Control: no-cache, no-store, must-revalidate"); 
+header("Pragma: no-cache"); 
+header("Expires: 0"); 
 
+require_once 'Database.php';
+require_once 'Admin.php';
 
 if (!isset($_SESSION['username']) || $_SESSION['status'] !== 'admin') {
     header("Location: login.php");
     exit;
 }
 
-
-function getDbConnection() {
-    $servername = "127.0.0.1";
-    $usernameDB = "root";
-    $passwordDB = "";
-    $db = "RealEstate";
-
-    $conn = new mysqli($servername, $usernameDB, $passwordDB, $db);
-
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-
-    return $conn;
-}
-
-
-function getUsers() {
-    $conn = getDbConnection();
-    $query = "SELECT id, username, status FROM users";
-    $result = $conn->query($query);
-    
-    $users = [];
-    while ($row = $result->fetch_assoc()) {
-        $users[] = $row;
-    }
-
-    $conn->close();
-    return $users;
-}
-
-
-function getTotalUsers() {
-    $conn = getDbConnection();
-    $query = "SELECT COUNT(*) AS total_users FROM users";
-    $result = $conn->query($query);
-    $row = $result->fetch_assoc();
-
-    $conn->close();
-    return $row['total_users'] ?? 0;
-}
-
-
-function getTotalProperties() {
-    $conn = getDbConnection();
-    $query = "SELECT COUNT(*) AS total_properties FROM properties";
-    $result = $conn->query($query);
-    $row = $result->fetch_assoc();
-
-    $conn->close();
-    return $row['total_properties'] ?? 0;
-}
-
-
-function getTotalMessages() {
-    $conn = getDbConnection();
-    $query = "SELECT COUNT(*) AS total_messages FROM messages";
-    $result = $conn->query($query);
-    $row = $result->fetch_assoc();
-
-    $conn->close();
-    return $row['total_messages'] ?? 0;
-}
+$db = new Database();
+$admin = new Admin($db->getConnection());
+$users = $admin->getUsers();
+$totalUsers = $admin->getTotalUsers();
+$totalProperties = $admin->getTotalProperties();
+$totalMessages = $admin->getTotalMessages();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin_Dashboard</title>
-  
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -161,9 +104,9 @@ function getTotalMessages() {
     <div class="dashboard">
         <h2>Statistics</h2>
         <div class="stats">
-            <h3>Total Users: <?php echo getTotalUsers(); ?></h3>
-            <h3>Total Properties: <?php echo getTotalProperties(); ?></h3>
-            <h3>Total Messages: <?php echo getTotalMessages(); ?></h3>
+            <h3>Total Users: <?= $totalUsers ?></h3>
+            <h3>Total Properties: <?= $totalProperties ?></h3>
+            <h3>Total Messages: <?= $totalMessages ?></h3>
         </div>
 
         <h2>Manage Users</h2>
@@ -174,18 +117,21 @@ function getTotalMessages() {
                 <th>Status</th>
                 <th>Actions</th>
             </tr>
-            <?php
-            $users = getUsers();
-            foreach ($users as $user) {
-                echo "<tr>
-                        <td>{$user['id']}</td>
-                        <td>{$user['username']}</td>
-                        <td>{$user['status']}</td>
-                        <td><a href='edit_user.php?id={$user['id']}'>Edit</a> | <a href='delete_user.php?id={$user['id']}'>Delete</a></td>
-                      </tr>";
-            }
-            ?>
+            <?php foreach ($users as $user): ?>
+                <tr>
+                    <td><?= $user['id'] ?></td>
+                    <td><?= $user['username'] ?></td>
+                    <td><?= $user['status'] ?></td>
+                    <td>
+                        <a href="edit_user.php?id=<?= $user['id'] ?>">Edit</a> |
+                        <a href="delete_user.php?id=<?= $user['id'] ?>">Delete</a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
         </table>
     </div>
 </body>
 </html>
+  
+    
+

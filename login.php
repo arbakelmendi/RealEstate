@@ -1,27 +1,27 @@
 <?php
 session_start();
-require 'Database.php'; // Include the Database class
-require 'User.php'; // Include the User class
+require_once 'Database.php'; 
+require_once 'User.php'; 
 
 $error = "";
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    // Create a Database object and get the connection
+    
     $db = new Database();
     $pdo = $db->getConnection();
 
-    // Create a User object and authenticate the user
+   
     $user = new User($pdo);
     $authenticatedUser = $user->authenticate($username, $password);
 
     if ($authenticatedUser) {
-        // Login successful
+      
         $_SESSION['username'] = $username;
         $_SESSION['status'] = $authenticatedUser['status'];
 
-        // Redirect based on user status
+     
         if ($authenticatedUser['status'] === 'admin') {
             header("Location: admin_dashboard.php");
         } else if ($authenticatedUser['status'] === 'user') {
@@ -29,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
         exit;
     } else {
-        // Login failed
+       
         $error = "Incorrect username or password!";
     }
 }

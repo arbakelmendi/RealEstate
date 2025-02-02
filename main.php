@@ -1,45 +1,36 @@
-<?php 
+<?php
 session_start();
+header("Cache-Control: no-cache, no-store, must-revalidate"); 
+header("Pragma: no-cache"); 
+header("Expires: 0"); 
 
 if (!isset($_SESSION['username'])) {
     header("Location: login.php");
     exit;
 }
-
-
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
-
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles/style.css">
     <title>ProRealEstate</title>
-
-
 </head>
-
 <body>
+    <div class="banner">
+        <div class="navbar">
+            <img src="img/logo.png" class="logo">
+            <ul>
+                <li><a href="main.php">Home</a></li>
+                <li><a href="agents.php">Agents</a></li>
+                <li><a href="contactUs.php">Contact</a></li>
+                <li><a href="logout.php">Logout</a></li>
+            </ul>
+        </div>
 
- 
- 
-
-        <div class="banner">
-            <div class="navbar">
-                <img src="img/logo.png" class="logo">
-                <ul>
-                    <li><a href="main.php">Home</a></li>
-                    <li><a href="agents.php">Agents</a></li>
-                    <li><a href="contactUs.php">Contact</a></li>
-                    <li><a href="logout.php">Logout</a></li>
-       
-                </ul>
-            </div>
-    
-          
-            <div class="slideshow-wrapper">
+        <div class="slideshow-wrapper">
                 <div class="slideshow-container">
 
                     <div class="mySlides fade">
