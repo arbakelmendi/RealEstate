@@ -7,7 +7,7 @@ header("Expires: 0");
 
 require_once 'Database.php';
 require_once 'Admin.php';
-require_once 'User.php'; // Make sure the User class is included
+require_once 'User.php'; 
 
 if (!isset($_SESSION['username']) || $_SESSION['status'] !== 'admin') {
     header("Location: login.php");
@@ -18,25 +18,25 @@ $db = new Database();
 $admin = new Admin($db->getConnection());
 $user = new User($db->getConnection());
 
-// Get the ID of the currently logged-in admin (the one creating the user)
-$admin_id = $_SESSION['user_id'];  // Assuming 'user_id' is stored in session
 
-// Get statistics for the dashboard
+$admin_id = $_SESSION['user_id'];  
+
+
 $users = $admin->getUsers();
 $totalUsers = $admin->getTotalUsers();
 $totalProperties = $admin->getTotalProperties();
 $totalMessages = $admin->getTotalMessages();
 
-// Handle form submission for creating a new user
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'], $_POST['password'], $_POST['status'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
     $status = $_POST['status'];
 
-    // Hash the password for security
+   
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-    // Call the createUser method with created_by as admin_id
+   
     if ($user->createUser($username, $hashedPassword, $status, $admin_id)) {
         echo "User created successfully!";
     } else {
