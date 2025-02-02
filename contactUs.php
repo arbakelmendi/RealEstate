@@ -16,7 +16,7 @@ require 'ContactForm.php';
 $servername = "localhost";
 $username = "root";
 $password = "";
-$db = "web";
+$db = "RealEstate";
 
 $contactForm = new ContactForm($servername, $username, $password, $db);
 $message = "";

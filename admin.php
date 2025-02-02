@@ -24,7 +24,7 @@ class Admin {
     }
 
     public function getTotalMessages() {
-        $stmt = $this->pdo->query("SELECT COUNT(*) AS total_messages FROM messages");
+        $stmt = $this->pdo->query("SELECT COUNT(*) AS total_messages FROM contactus");
         return $stmt->fetchColumn();
     }
 }
